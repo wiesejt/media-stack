@@ -158,18 +158,18 @@ services:
       - /docker/deluge/config:/config
       - /mnt/media/seedbox/:/downloads
 
-  muximux:
-    image: ghcr.io/linuxserver/muximux
-    container_name: muximux
-    restart: unless-stopped
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - /docker/muximux/config:/config
-    ports:
-      - 8081:80
+#  muximux:
+#    image: ghcr.io/linuxserver/muximux
+#    container_name: muximux
+#    restart: unless-stopped
+#    environment:
+#      - PUID=${PUID}
+#      - PGID=${PGID}
+#      - TZ=${TZ}
+#    volumes:
+#      - /docker/muximux/config:/config
+#    ports:
+#      - 8081:80
 
   organizr:
     image: organizr/organizr
