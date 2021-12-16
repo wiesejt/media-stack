@@ -1,0 +1,191 @@
+version: '3.7'
+
+services:
+
+  radarr:
+    image: ghcr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /docker/radarr/config/:/config
+      - /mnt/media/plex/movies/:/movies
+      - /mnt/media/seedbox/:/downloads
+    ports:
+      - 7878:7878
+    networks:
+      media_net:
+      
+  plex:
+    image: ghcr.io/linuxserver/plex:latest
+    container_name: plex
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - VERSION=docker
+      - PLEX_CLAIM=claim-yNgbt1LWy6J1SA8Kntxm
+      - ADVERTISE_IP=192.168.1.4:32400
+    volumes:
+      - /docker/plex/config/:/config
+      - /mnt/media/plex/movies/:/movies
+      - /mnt/media/plex/4kmovies/:/4kmovies
+      - /mnt/media/plex/tvshows/:/tv
+      - /mnt/transcode/:/tmp
+    ports:
+      - 32400:32400
+    networks:
+      media_net:
+
+  radarr-4k:
+    image: ghcr.io/linuxserver/radarr:latest
+    container_name: radarr-4k
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /docker/radarr-4k/config/:/config
+      - /mnt/media/plex/4kmovies/:/movies
+      - /mnt/media/seedbox/:/downloads
+    ports:
+      - 7879:7878
+    networks:
+      media_net:   
+
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 8989:8989
+    volumes:
+      - /docker/sonarr/config/:/config
+      - /mnt/media/plex/tvshows/:/tv
+      - /mnt/media/seedbox/:/downloads
+    networks:
+      media_net:
+
+  ombi:
+    image:  ghcr.io/linuxserver/ombi:latest
+    container_name: ombi
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+#    ports:
+#      - 80:3579
+    volumes:
+      - /docker/ombi/config/:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ombi.rule=Host(`ombi.wiesefamily.io`)"
+      - "traefik.docker.network=traefik_net"
+      - "traefik.http.routers.ombi.entrypoints=web-secure"
+      - "traefik.http.routers.ombi.tls=true"
+    networks:
+      traefik_net:
+      media_net:
+
+  jackett:
+    image:  ghcr.io/linuxserver/jackett:latest
+    container_name: jackett
+    restart: unless-stopped
+    ports:
+      - 9117:9117
+    volumes:
+      - /docker/jackett/config/:/config
+      - /docker/jackett/downloads/:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      media_net:
+        
+
+  prowlarr:
+    image:  ghcr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    restart: unless-stopped
+    ports:
+      - 9696:9696
+    volumes:
+      - /docker/prowlarr/config/:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+  vpn:
+    image: dperson/openvpn-client:latest
+    container_name: vpn
+    cap_add:
+      - net_admin #
+    restart: unless-stopped
+    volumes:
+      - /dev/net:/dev/net:z # tun device
+      - /docker/vpn/config/:/vpn # OpenVPN configuration
+    security_opt:
+      - label:disable
+    ports:
+      - 8112:8112 # port for deluge web UI to be reachable from local network
+    command: '-f "" -r 192.168.77.0/24' # enable firewall and route local network traffic
+    networks:
+      media_net:
+
+  deluge:
+    image: ghcr.io/linuxserver/deluge:latest
+    container_name: deluge_compose
+    restart: unless-stopped
+    network_mode: service:vpn
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=000 optional
+      - DELUGE_LOGLEVEL=error #optional
+    volumes:
+      - /docker/deluge/config:/config
+      - /mnt/media/seedbox/:/downloads
+
+  muximux:
+    image: ghcr.io/linuxserver/muximux
+    container_name: muximux
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /docker/muximux/config:/config
+    ports:
+      - 8081:80
+
+  organizr:
+    image: organizr/organizr
+    container_name: organizr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /docker/organizr/config:/config
+    ports:
+      - 8082:80
+    
+networks:
+  traefik_net:
+    external: true
+  media_net:
+    external: true
