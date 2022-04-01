@@ -76,7 +76,7 @@ services:
 
   sonarr4k:
     image: ghcr.io/linuxserver/sonarr:latest
-    container_name: sonarr
+    container_name: sonarr4k
     restart: unless-stopped
     environment:
       - PUID=${PUID}
