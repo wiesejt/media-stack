@@ -74,6 +74,23 @@ services:
     networks:
       media_net:
 
+  sonarr4k:
+    image: ghcr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 8990:8989
+    volumes:
+      - /docker/sonarr-4k/config/:/config
+      - /mnt/media/plex/4ktvshows/:/tv
+      - /mnt/media/seedbox/:/downloads
+    networks:
+      media_net:
+
   ombi:
     image:  ghcr.io/linuxserver/ombi:latest
     container_name: ombi
