@@ -20,15 +20,15 @@ services:
       media_net:
       
   plex:
-    image: ghcr.io/linuxserver/plex:latest
+    image: lscr.io/linuxserver/plex:latest
     container_name: plex
     restart: unless-stopped
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - VERSION=docker
-#      - PLEX_CLAIM=claim-
-#      - ADVERTISE_IP=192.168.1.4:32400
+#     - PLEX_CLAIM=claim-PYG5H-Jxf6T-yHjAqY9n
+#     - ADVERTISE_IP=192.168.1.4:32400
     volumes:
       - /docker/plex/config/:/config
       - /mnt/media/plex/movies/:/movies
@@ -174,19 +174,6 @@ services:
     volumes:
       - /docker/deluge/config:/config
       - /mnt/media/seedbox/:/downloads
-
-#  muximux:
-#    image: ghcr.io/linuxserver/muximux
-#    container_name: muximux
-#    restart: unless-stopped
-#    environment:
-#      - PUID=${PUID}
-#      - PGID=${PGID}
-#      - TZ=${TZ}
-#    volumes:
-#      - /docker/muximux/config:/config
-#    ports:
-#      - 8081:80
 
   organizr:
     image: organizr/organizr
