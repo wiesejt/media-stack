@@ -27,8 +27,6 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - VERSION=docker
-#     - PLEX_CLAIM=claim-PYG5H-Jxf6T-yHjAqY9n
-#     - ADVERTISE_IP=192.168.1.4:32400
     volumes:
       - /docker/plex/config/:/config
       - /mnt/media/plex/movies/:/movies
