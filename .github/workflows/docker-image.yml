@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Starting container
-      run: docker compose down
+      run: sudo docker compose down
