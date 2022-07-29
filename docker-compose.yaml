@@ -32,6 +32,7 @@ services:
       - /mnt/media/plex/movies/:/movies
       - /mnt/media/plex/4kmovies/:/4kmovies
       - /mnt/media/plex/tvshows/:/tv
+      - /mnt/media/plex/workout/:/workout
       - /mnt/transcode/:/tmp
     ports:
       - 32400:32400
