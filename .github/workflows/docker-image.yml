@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Starting container
-      run: sudo docker-compose down
+      run: docker-compose pull && docker-compose down && docker-compose up -d
