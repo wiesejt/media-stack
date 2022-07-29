@@ -4,7 +4,7 @@ services:
 
   radarr:
     image: ghcr.io/linuxserver/radarr:latest
-    container_name: radarr
+    container_name: radarrs
     restart: unless-stopped
     environment:
       - PUID=${PUID}
