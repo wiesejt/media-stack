@@ -171,7 +171,8 @@ services:
     volumes:
       - /docker/deluge/config:/config
       - /mnt/media/seedbox/:/downloads
-
+      
+# Single pane for all the apps in webui
   organizr:
     image: organizr/organizr
     container_name: organizr
