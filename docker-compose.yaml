@@ -27,7 +27,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - VERSION=docker
-      - PLEX_CLAIM=claim-YxTk-MWMKrzppCuQA-zS
+      - PLEX_CLAIM=claim-MD-QFMbGy_mWeegTEYWi
     volumes:
       - /docker/plex/config/:/config
       - /mnt/media/plex/movies/:/movies
