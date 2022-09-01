@@ -27,12 +27,13 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - VERSION=docker
-      - PLEX_CLAIM=claim-N5q4reEs9yJTJy3VFZsZ
+      - PLEX_CLAIM=claim-xoz6_TWe1xPvsqLyuhre
       - ADVERTISE_IP=192.168.1.4
     volumes:
       - /docker/plex/config/:/config
       - /mnt/media/plex/movies/:/movies
       - /mnt/media/plex/4kmovies/:/4kmovies
+      - /mnt/media/plex/4ktvshows:/4ktvshows
       - /mnt/media/plex/tvshows/:/tv
       - /mnt/media/plex/workout/:/workout
       - /mnt/media/plex/sports:/sports
