@@ -35,6 +35,7 @@ services:
       - /mnt/media/plex/4kmovies/:/4kmovies
       - /mnt/media/plex/4ktvshows:/4ktvshows
       - /mnt/media/plex/tvshows/:/tv
+      - /mnt/media/plex/4ktvshows/:/4ktv
       - /mnt/media/plex/workout/:/workout
       - /mnt/media/plex/sports:/sports
       - /mnt/transcode/:/tmp
